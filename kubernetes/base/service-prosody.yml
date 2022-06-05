@@ -1,0 +1,28 @@
+---
+# kubernetes/base/service.yml
+
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "meet-prosody-service"
+  labels:
+    app.kubernetes.io/name: "meet-prosody-service"
+    app.kubernetes.io/component: "prosody"
+spec:
+  type: "NodePort"
+  selector:
+    app.kubernetes.io/component: "prosody"
+  ports:
+    - port: 5222
+      name: "c2s"
+      protocol: "TCP"
+      targetPort: 5222
+    - port: 5347
+      name: "xmpp-server"
+      protocol: "TCP"
+      targetPort: 5347
+    - port: 5280
+      name: "http"
+      protocol: "TCP"
+      targetPort: 5280
+...
