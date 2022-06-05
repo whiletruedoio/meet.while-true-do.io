@@ -1,0 +1,30 @@
+---
+# kubernetes/home/ingress.yml
+
+apiVersion: "networking.k8s.io/v1"
+kind: "Ingress"
+metadata:
+  name: "meet-web-ingress"
+  labels:
+    app.kubernetes.io/name: "meet-web-ingress"
+    app.kubernetes.io/component: "web"
+spec:
+  rules:
+    - host: "meet.home.while-true-do.io"
+      http:
+        paths:
+          - pathType: "Prefix"
+            path: "/"
+            backend:
+              service:
+                name: "meet-web-service"
+                port:
+                  number: 80
+          - pathType: "Prefix"
+            path: "/"
+            backend:
+              service:
+                name: "meet-web-service"
+                port:
+                  number: 443
+...

@@ -1,0 +1,51 @@
+---
+# kubernetes/base/deployment.yml
+
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "meet-web-deployment"
+  labels:
+    app.kubernetes.io/name: "meet-web-deployment"
+    app.kubernetes.io/component: "web"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: "web"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: "web"
+    spec:
+      containers:
+        - name: "web"
+          image: "jitsi/web:stable-6826"
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
+          env:
+            - name: "PUBLIC_URL"
+              value: "https://meet.home.while-true-do.io"
+            - name: "XMPP_SERVER"
+              value: "meet-prosody-service"
+            - name: "JICOFO_AUTH_USER"
+              value: "focus"
+            - name: "XMPP_DOMAIN"
+              value: "meet.jitsi"
+            - name: "XMPP_AUTH_DOMAIN"
+              value: "auth.meet.jitsi"
+            - name: "XMPP_INTERNAL_MUC_DOMAIN"
+              value: "internal-muc.meet.jitsi"
+            - name: "XMPP_BOSH_URL_BASE"
+              value: "http://meet-prosody-service:5280"
+            - name: "XMPP_MUC_DOMAIN"
+              value: "muc.meet.jitsi"
+            - name: "TZ"
+              value: "UTC"
+            - name: "JVB_TCP_HARVESTER_DISABLED"
+              value: "true"
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+...

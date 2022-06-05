@@ -1,0 +1,54 @@
+---
+# kubernetes/base/deployment.yml
+
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "meet-jicofo-deployment"
+  labels:
+    app.kubernetes.io/name: "meet-jicofo-deployment"
+    app.kubernetes.io/component: "web"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: "web"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: "web"
+    spec:
+      containers:
+        - name: "jicofo"
+          image: jitsi/jicofo:stable-6826
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "250m"
+          env:
+            - name: XMPP_SERVER
+              value: meet-prosody-service
+            - name: XMPP_DOMAIN
+              value: meet.jitsi
+            - name: XMPP_AUTH_DOMAIN
+              value: auth.meet.jitsi
+            - name: XMPP_MUC_DOMAIN
+              value: muc.meet.jitsi
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: internal-muc.meet.jitsi
+            - name: JICOFO_COMPONENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JICOFO_COMPONENT_SECRET
+            - name: JICOFO_AUTH_USER
+              value: focus
+            - name: JICOFO_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-config
+                  key: JICOFO_AUTH_PASSWORD
+            - name: "TZ"
+              value: "UTC"
+            - name: JVB_BREWERY_MUC
+              value: jvbbrewery
+...

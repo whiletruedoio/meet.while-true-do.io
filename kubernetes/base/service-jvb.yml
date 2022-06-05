@@ -1,0 +1,26 @@
+---
+# kubernetes/base/service.yml
+
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "meet-jvb-service"
+  labels:
+    app.kubernetes.io/name: "meet-jvb-service"
+    app.kubernetes.io/component: "jvb"
+spec:
+  type: "NodePort"
+  selector:
+    app.kubernetes.io/component: "jvb"
+  externalTrafficPolicy: "Cluster"
+  ports:
+    - port: 30300
+      name: "jvb"
+      protocol: "UDP"
+      targetPort: 30300
+      nodePort: 30300
+    - port: 8080
+      name: "jvb-colibri"
+      protocol: "TCP"
+      targetPort: 8080
+...
